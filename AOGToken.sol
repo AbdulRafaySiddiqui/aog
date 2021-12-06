@@ -551,6 +551,6 @@ abstract contract ERC20Burnable is Context, ERC20 {
 pragma solidity 0.8.4;
 contract AOG is ERC20Burnable {
     constructor(string memory name) ERC20(name, "AOG") {
-        _mint(msg.sender, 27_000_000e18);
+        _mint(msg.sender, 270_000_000e18);
     }
 }

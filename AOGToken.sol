@@ -84,9 +84,7 @@ interface IERC20 {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
-
 // File @openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol@v4.4.0
-
 
 // OpenZeppelin Contracts v4.4.0 (token/ERC20/extensions/IERC20Metadata.sol)
 
@@ -114,9 +112,7 @@ interface IERC20Metadata is IERC20 {
     function decimals() external view returns (uint8);
 }
 
-
 // File @openzeppelin/contracts/utils/Context.sol@v4.4.0
-
 
 // OpenZeppelin Contracts v4.4.0 (utils/Context.sol)
 
@@ -142,15 +138,11 @@ abstract contract Context {
     }
 }
 
-
 // File @openzeppelin/contracts/token/ERC20/ERC20.sol@v4.4.0
-
 
 // OpenZeppelin Contracts v4.4.0 (token/ERC20/ERC20.sol)
 
 pragma solidity ^0.8.0;
-
-
 
 /**
  * @dev Implementation of the {IERC20} interface.
@@ -255,7 +247,12 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `recipient` cannot be the zero address.
      * - the caller must have a balance of at least `amount`.
      */
-    function transfer(address recipient, uint256 amount) public virtual override returns (bool) {
+    function transfer(address recipient, uint256 amount)
+        public
+        virtual
+        override
+        returns (bool)
+    {
         _transfer(_msgSender(), recipient, amount);
         return true;
     }
@@ -263,7 +260,13 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     /**
      * @dev See {IERC20-allowance}.
      */
-    function allowance(address owner, address spender) public view virtual override returns (uint256) {
+    function allowance(address owner, address spender)
+        public
+        view
+        virtual
+        override
+        returns (uint256)
+    {
         return _allowances[owner][spender];
     }
 
@@ -274,7 +277,12 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      *
      * - `spender` cannot be the zero address.
      */
-    function approve(address spender, uint256 amount) public virtual override returns (bool) {
+    function approve(address spender, uint256 amount)
+        public
+        virtual
+        override
+        returns (bool)
+    {
         _approve(_msgSender(), spender, amount);
         return true;
     }
@@ -300,7 +308,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         _transfer(sender, recipient, amount);
 
         uint256 currentAllowance = _allowances[sender][_msgSender()];
-        require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
+        require(currentAllowance >= amount, 'ERC20: transfer amount exceeds allowance');
         unchecked {
             _approve(sender, _msgSender(), currentAllowance - amount);
         }
@@ -320,7 +328,11 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      *
      * - `spender` cannot be the zero address.
      */
-    function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
+    function increaseAllowance(address spender, uint256 addedValue)
+        public
+        virtual
+        returns (bool)
+    {
         _approve(_msgSender(), spender, _allowances[_msgSender()][spender] + addedValue);
         return true;
     }
@@ -339,9 +351,16 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `spender` must have allowance for the caller of at least
      * `subtractedValue`.
      */
-    function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
+    function decreaseAllowance(address spender, uint256 subtractedValue)
+        public
+        virtual
+        returns (bool)
+    {
         uint256 currentAllowance = _allowances[_msgSender()][spender];
-        require(currentAllowance >= subtractedValue, "ERC20: decreased allowance below zero");
+        require(
+            currentAllowance >= subtractedValue,
+            'ERC20: decreased allowance below zero'
+        );
         unchecked {
             _approve(_msgSender(), spender, currentAllowance - subtractedValue);
         }
@@ -368,13 +387,13 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         address recipient,
         uint256 amount
     ) internal virtual {
-        require(sender != address(0), "ERC20: transfer from the zero address");
-        require(recipient != address(0), "ERC20: transfer to the zero address");
+        require(sender != address(0), 'ERC20: transfer from the zero address');
+        require(recipient != address(0), 'ERC20: transfer to the zero address');
 
         _beforeTokenTransfer(sender, recipient, amount);
 
         uint256 senderBalance = _balances[sender];
-        require(senderBalance >= amount, "ERC20: transfer amount exceeds balance");
+        require(senderBalance >= amount, 'ERC20: transfer amount exceeds balance');
         unchecked {
             _balances[sender] = senderBalance - amount;
         }
@@ -395,7 +414,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `account` cannot be the zero address.
      */
     function _mint(address account, uint256 amount) internal virtual {
-        require(account != address(0), "ERC20: mint to the zero address");
+        require(account != address(0), 'ERC20: mint to the zero address');
 
         _beforeTokenTransfer(address(0), account, amount);
 
@@ -418,12 +437,12 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * - `account` must have at least `amount` tokens.
      */
     function _burn(address account, uint256 amount) internal virtual {
-        require(account != address(0), "ERC20: burn from the zero address");
+        require(account != address(0), 'ERC20: burn from the zero address');
 
         _beforeTokenTransfer(account, address(0), amount);
 
         uint256 accountBalance = _balances[account];
-        require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
+        require(accountBalance >= amount, 'ERC20: burn amount exceeds balance');
         unchecked {
             _balances[account] = accountBalance - amount;
         }
@@ -452,8 +471,8 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         address spender,
         uint256 amount
     ) internal virtual {
-        require(owner != address(0), "ERC20: approve from the zero address");
-        require(spender != address(0), "ERC20: approve to the zero address");
+        require(owner != address(0), 'ERC20: approve from the zero address');
+        require(spender != address(0), 'ERC20: approve to the zero address');
 
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
@@ -500,14 +519,11 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     ) internal virtual {}
 }
 
-
 // File @openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol@v4.4.0
-
 
 // OpenZeppelin Contracts v4.4.0 (token/ERC20/extensions/ERC20Burnable.sol)
 
 pragma solidity ^0.8.0;
-
 
 /**
  * @dev Extension of {ERC20} that allows token holders to destroy both their own
@@ -537,7 +553,7 @@ abstract contract ERC20Burnable is Context, ERC20 {
      */
     function burnFrom(address account, uint256 amount) public virtual {
         uint256 currentAllowance = allowance(account, _msgSender());
-        require(currentAllowance >= amount, "ERC20: burn amount exceeds allowance");
+        require(currentAllowance >= amount, 'ERC20: burn amount exceeds allowance');
         unchecked {
             _approve(account, _msgSender(), currentAllowance - amount);
         }
@@ -545,12 +561,142 @@ abstract contract ERC20Burnable is Context, ERC20 {
     }
 }
 
+interface ILiquidityRestrictor {
+    function assureByAgent(
+        address token,
+        address from,
+        address to
+    ) external returns (bool allow, string memory message);
+
+    function assureLiquidityRestrictions(address from, address to)
+        external
+        returns (bool allow, string memory message);
+}
+
+interface IAntisnipe {
+    function assureCanTransfer(
+        address sender,
+        address from,
+        address to,
+        uint256 amount
+    ) external returns (bool response);
+}
 
 // File contracts/AOG.sol
 
-pragma solidity 0.8.4;
-contract AOG is ERC20Burnable {
-    constructor(string memory name) ERC20(name, "AOG") {
+abstract contract Ownable is Context {
+    address private _owner;
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    /**
+     * @dev Initializes the contract setting the deployer as the initial owner.
+     */
+    constructor() {
+        _transferOwnership(_msgSender());
+    }
+
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view virtual returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        require(owner() == _msgSender(), 'Ownable: caller is not the owner');
+        _;
+    }
+
+    /**
+     * @dev Leaves the contract without owner. It will not be possible to call
+     * `onlyOwner` functions anymore. Can only be called by the current owner.
+     *
+     * NOTE: Renouncing ownership will leave the contract without an owner,
+     * thereby removing any functionality that is only available to the owner.
+     */
+    function renounceOwnership() public virtual onlyOwner {
+        _transferOwnership(address(0));
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     */
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+        require(newOwner != address(0), 'Ownable: new owner is the zero address');
+        _transferOwnership(newOwner);
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Internal function without access restriction.
+     */
+    function _transferOwnership(address newOwner) internal virtual {
+        address oldOwner = _owner;
+        _owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
+    }
+}
+
+pragma solidity ^0.8.0;
+
+contract AOG is ERC20Burnable, Ownable {
+    constructor(string memory name) ERC20(name, 'AOG') {
         _mint(msg.sender, 270_000_000e18);
+    }
+
+    IAntisnipe public antisnipe = IAntisnipe(address(0));
+    ILiquidityRestrictor public liquidityRestrictor =
+        ILiquidityRestrictor(0xeD1261C063563Ff916d7b1689Ac7Ef68177867F2);
+
+    bool public antisnipeEnabled = true;
+    bool public liquidityRestrictionEnabled = true;
+
+    event AntisnipeDisabled(uint256 timestamp, address user);
+    event LiquidityRestrictionDisabled(uint256 timestamp, address user);
+    event AntisnipeAddressChanged(address addr);
+    event LiquidityRestrictionAddressChanged(address addr);
+
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 amount
+    ) internal override {
+        if (from == address(0) || to == address(0)) return;
+        if (liquidityRestrictionEnabled && address(liquidityRestrictor) != address(0)) {
+            (bool allow, string memory message) = liquidityRestrictor
+                .assureLiquidityRestrictions(from, to);
+            require(allow, message);
+        }
+
+        if (antisnipeEnabled && address(antisnipe) != address(0)) {
+            require(antisnipe.assureCanTransfer(msg.sender, from, to, amount));
+        }
+    }
+
+    function setAntisnipeDisable() external onlyOwner {
+        require(antisnipeEnabled);
+        antisnipeEnabled = false;
+        emit AntisnipeDisabled(block.timestamp, msg.sender);
+    }
+
+    function setLiquidityRestrictorDisable() external onlyOwner {
+        require(liquidityRestrictionEnabled);
+        liquidityRestrictionEnabled = false;
+        emit LiquidityRestrictionDisabled(block.timestamp, msg.sender);
+    }
+
+    function setAntisnipeAddress(address addr) external onlyOwner {
+        antisnipe = IAntisnipe(addr);
+        emit AntisnipeAddressChanged(addr);
+    }
+
+    function setLiquidityRestrictionAddress(address addr) external onlyOwner {
+        liquidityRestrictor = ILiquidityRestrictor(addr);
+        emit LiquidityRestrictionAddressChanged(addr);
     }
 }
